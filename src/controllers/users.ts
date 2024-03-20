@@ -12,7 +12,7 @@ export const getAllUsers = async (
     return res.status(200).json(users);
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    res.status(500).json(error);
   }
 };
 
@@ -41,7 +41,7 @@ export const updateUser = async (
     const { username } = req.body;
 
     if (!username) {
-      return res.sendStatus(400);
+      return res.status(400).json('required username');
     }
 
     const user = await getUserById(id);
@@ -49,9 +49,9 @@ export const updateUser = async (
     user.username = username;
     await user.save();
 
-    return res.status(2022).json(user);
+    return res.status(200).json(user);
   } catch (error) {
     console.log(error);
-    res.sendStatus(403);
+    res.status(403).json(error);
   }
 };

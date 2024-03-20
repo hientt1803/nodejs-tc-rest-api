@@ -8,7 +8,7 @@ export const login = async (req: express.Request, res: express.Response) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.sendStatus(400);
+      return res.status(404).json("wrong username or password!");
     }
 
     const user = await getUserByEmail(email).select(
@@ -16,13 +16,13 @@ export const login = async (req: express.Request, res: express.Response) => {
     );
 
     if (!user) {
-      return res.sendStatus(400);
+      return res.status(404).json("wrong user");
     }
 
     const expectedHash = authentication(user.authentication.salt, password);
 
     if (user.authentication.password != expectedHash) {
-      return res.sendStatus(403);
+      return res.status(400).json("wrong password");
     }
 
     const salt = random();
@@ -38,10 +38,10 @@ export const login = async (req: express.Request, res: express.Response) => {
       path: "/",
     });
 
-    return res.status(200).json(user);
+    return res.status(200).json(user).end();
   } catch (error) {
     console.log(error);
-    return res.sendStatus(400);
+    return res.status(400).json(error);
   }
 };
 
@@ -50,13 +50,13 @@ export const register = async (req: express.Request, res: express.Response) => {
     const { email, password, username } = req.body;
 
     if (!email || !password || !username) {
-      return res.sendStatus(400);
+      return res.status(400).json("please, enter email, password, username");
     }
 
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
-      return res.sendStatus(204);
+      return res.status(400).json("user areadly exist");
     }
 
     const salt = random();
@@ -72,6 +72,6 @@ export const register = async (req: express.Request, res: express.Response) => {
     return res.status(201).json(user);
   } catch (error) {
     console.log(error);
-    return res.sendStatus(400);
+    return res.status(400).json(error);
   }
 };
