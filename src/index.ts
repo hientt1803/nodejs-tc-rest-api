@@ -4,8 +4,8 @@ import bodyParser from "body-parser";
 import cookiParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
-import mongoose from "mongoose";
 import router from "./routes";
+import connection from "./helpers/connection";
 
 const app = express();
 
@@ -23,12 +23,7 @@ const server = http.createServer(app);
 
 server.listen(8080, () => {
   console.log("Server running on localhost: 8080");
+  connection();
 });
-
-const MONGO_URL =
-  "mongodb+srv://tronghientran18:tronghien1718@cluster0.ehj61xi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-mongoose.Promise = Promise;
-mongoose.connect(MONGO_URL);
-mongoose.connection.on("error", (error: Error) => console.log(error));
 
 app.use("/", router());

@@ -4,7 +4,6 @@ import {
   getCategories,
   getCategoryById,
   createCategory,
-  updateCategoryById,
   deleteCategoryById,
 } from "../db/Categories";
 
@@ -18,7 +17,7 @@ export const getAllCategories = async (
     res.status(200).json(categories);
   } catch (error) {
     console.log(error);
-    res.status(500).json("get error");
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
@@ -36,7 +35,7 @@ export const create = async (req: express.Request, res: express.Response) => {
     return res.status(201).json(category);
   } catch (error) {
     console.log(error);
-    res.status(500).json("create error");
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
@@ -53,13 +52,13 @@ export const update = async (req: express.Request, res: express.Response) => {
 
     category.categoryName = categoryName;
     category.update_at = new Date();
-    
+
     category.save();
 
     return res.status(200).json(category);
   } catch (error) {
     console.log(error);
-    res.status(500).json("update error");
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
@@ -75,6 +74,6 @@ export const deleteCategory = async (
     return res.status(204).json(deletedUser);
   } catch (error) {
     console.log(error);
-    res.status(500).json(error);
+    res.status(400).json({ success: false, message: error.message });
   }
 };

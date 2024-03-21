@@ -41,7 +41,7 @@ export const login = async (req: express.Request, res: express.Response) => {
     return res.status(200).json(user).end();
   } catch (error) {
     console.log(error);
-    return res.status(400).json(error);
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
@@ -72,6 +72,20 @@ export const register = async (req: express.Request, res: express.Response) => {
     return res.status(201).json(user);
   } catch (error) {
     console.log(error);
-    return res.status(400).json(error);
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+export const logout = async (req: express.Request, res: express.Response) => {
+  try {
+    res.clearCookie("TRANHIEN-AUTH", {
+      domain: "localhost",
+      path: "/",
+    });
+
+    res.status(200).json("You have been lougged out successfully");
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ success: false, message: error.message });
   }
 };
