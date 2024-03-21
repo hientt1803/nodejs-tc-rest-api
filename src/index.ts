@@ -22,8 +22,8 @@ app.use(bodyParser.json());
 const server = http.createServer(app);
 
 server.listen(8080, () => {
-  console.log("Server running on localhost: 8080");
   connection();
+  console.log("Server running on localhost: 8080");
 });
 
 app.use("/", router());

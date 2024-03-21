@@ -51,7 +51,6 @@ export const update = async (req: express.Request, res: express.Response) => {
     !category && res.status(204).json("No category have been founded");
 
     category.categoryName = categoryName;
-    category.update_at = new Date();
 
     category.save();
 
