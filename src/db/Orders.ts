@@ -37,7 +37,7 @@ export const create = (values: Record<string, any>) =>
 const OrderDetailSchema = new mongoose.Schema(
   {
     price: { type: Number, require: true },
-    number: { type: Number, require: true },
+    quantity: { type: Number, require: true },
     order: {
       type: Schema.Types.ObjectId,
       ref: "Order",
@@ -59,6 +59,8 @@ export const OrderDetailModel = mongoose.model(
 
 export const getAllOrderDetail = () =>
   OrderDetailModel.find().populate(["order", "products"]);
+
+export const getOrderDetailById = (id: string) => OrderDetailModel.findById(id);
 
 export const createOrderDetail = (values: Record<string, any>) =>
   new OrderDetailModel(values).save().then((order) => order.toObject());
